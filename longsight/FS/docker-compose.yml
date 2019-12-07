@@ -1,0 +1,11 @@
+version: '3'
+services:
+  fastdfs:
+    image: sjqzhang/go-fastdfs
+    environment:
+      - GO_FASTDFS_DIR=/data
+    ports:
+      - "8080:8080"
+    volumes:
+      # 设置存储目录
+      - ./data:/data

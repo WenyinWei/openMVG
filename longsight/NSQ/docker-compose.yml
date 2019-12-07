@@ -1,0 +1,29 @@
+version: '3'
+services:
+  nsqlookupd:
+    image: nsqio/nsq
+    command: /nsqlookupd
+    ports:
+      # TCP访问端口
+      - "4160:4160"
+      # HTTP访问端口
+      - "4161:4161"
+  nsqd:
+    image: nsqio/nsq
+    # broadcast-address 需设置为客户端可访问的 IP 。
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 -broadcast-address=127.0.0.1
+    depends_on:
+      - nsqlookupd
+    ports:
+      # TCP访问端口
+      - "4150:4150"
+      # HTTP访问端口
+      - "4151:4151"
+  nsqadmin:
+    image: nsqio/nsq
+    command: /nsqadmin --lookupd-http-address=nsqlookupd:4161
+    depends_on:
+      - nsqlookupd  
+    ports:
+      # HTTP访问端口
+      - "4171:4171"
